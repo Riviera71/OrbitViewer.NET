@@ -63,6 +63,8 @@ namespace OrbitViewer.Application
 		#region TimeStep
 
 		readonly string[] TimeStepItems = {
+            "1 Second",
+            "1 Minut",
 			"1 Hour",
 			"1 Day",
 			"3 Days",
@@ -74,6 +76,8 @@ namespace OrbitViewer.Application
 		};
 
 		static ATimeSpan[] timeStepSpan = {
+            new ATimeSpan(0, 0,  0, 0, 0, 1.0),
+            new ATimeSpan(0, 0,  0, 0, 1, 0.0),
 			new ATimeSpan(0, 0,  0, 1, 0, 0.0),
 			new ATimeSpan(0, 0,  1, 0, 0, 0.0),
 			new ATimeSpan(0, 0,  3, 0, 0, 0.0),
@@ -88,8 +92,8 @@ namespace OrbitViewer.Application
 
 		#region Default values
 
-		const int InitialScrollVert = 130;
-		const int InitialScrollHorz = 255;
+		const int InitialScrollVert = 180;
+		const int InitialScrollHorz = 270;
 		const int InitialScrollZoom = 200;
 
 		//OrbitDisplayEnum
@@ -150,7 +154,7 @@ namespace OrbitViewer.Application
 			cboOrbits.SelectedIndex = (int)OrbitsEnum.Default;
 
 			cboTimestep.DataSource = TimeStepItems;
-			cboTimestep.SelectedIndex = 1;
+			cboTimestep.SelectedIndex = 3;
 
 			orbitPanel.ShowPlanetName = cbxPlanet.Checked;
 			orbitPanel.ShowObjectName = cbxObject.Checked;
