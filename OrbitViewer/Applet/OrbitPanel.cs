@@ -108,7 +108,23 @@ namespace OrbitViewer.Applet
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool ShowDateLabel { get; set; }
 
-		[Browsable(false)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool ShowAxis { get; set; }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool ShowGrid { get; set; }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool ShowInfoObject { get; set; }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool Antialiasing { get; set; }
+
+        [Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public double RotateHorz { get; set; }
 
@@ -142,12 +158,31 @@ namespace OrbitViewer.Applet
 		protected Color ColorObjectName = Color.FromArgb(0x00, 0xcc, 0xcc);
 		protected Color ColorPlanetOrbitUpper = Color.FromArgb(0xFF, 0xFF, 0xFF);
 		protected Color ColorPlanetOrbitLower = Color.FromArgb(0x80, 0x80, 0x80);
-		protected Color ColorPlanet = Color.FromArgb(0x00, 0xFF, 0x00);
+
+        protected Color ColorMercuryOrbitUpper = Color.FromArgb(0x0ff, 0x00, 0xBB);
+        protected Color ColorMercuryOrbitLower = Color.FromArgb(0x99, 0x00, 0x70);
+        protected Color ColorVenusOrbitUpper = Color.FromArgb(0xA0, 0x70, 0xD0);
+        protected Color ColorVenusOrbitLower = Color.FromArgb(0x60, 0x43, 0x7D);
+        protected Color ColorEarthOrbitUpper = Color.FromArgb(0x20, 0xC0, 0xFF);
+        protected Color ColorEarthOrbitLower = Color.FromArgb(0x13, 0x73, 0x99);
+        protected Color ColorMarsOrbitUpper = Color.FromArgb(0xFF, 0x40, 0x10);
+        protected Color ColorMarsOrbitLower = Color.FromArgb(0x99, 0x26, 0x0A);
+        protected Color ColorJupiterOrbitUpper = Color.FromArgb(0xFF, 0xA0, 0x20);
+        protected Color ColorJupiterOrbitLower = Color.FromArgb(0x99, 0x60, 0x13);
+        protected Color ColorSaturnOrbitUpper = Color.FromArgb(0xF0, 0xFF, 0x40);
+        protected Color ColorSaturnOrbitLower = Color.FromArgb(0x90, 0x99, 0x26);
+        protected Color ColorUranusOrbitUpper = Color.FromArgb(0x40, 0xFF, 0xA0);
+        protected Color ColorUranusOrbitLower = Color.FromArgb(0x26, 0x99, 0x60);
+        protected Color ColorNeptuneOrbitUpper = Color.FromArgb(0x90, 0xD0, 0xF0);
+        protected Color ColorNeptuneOrbitLower = Color.FromArgb(0x56, 0x7D, 0x90);
+
+        protected Color ColorPlanet = Color.FromArgb(0x00, 0xFF, 0x00);
 		protected Color ColorPlanetName = Color.FromArgb(0x00, 0xaa, 0x00);
 		protected Color ColorSun = Color.FromArgb(0xd0, 0x40, 0x40);
 		protected Color ColorAxisPlus = Color.FromArgb(0xFF, 0xFF, 0x00);
 		protected Color ColorAxisMinus = Color.FromArgb(0x55, 0x55, 0x00);
-		protected Color ColorInformation = Color.FromArgb(0xFF, 0xFF, 0xFF);
+        protected Color Colorplane = Color.FromArgb(0x15, 0x15, 0x15);
+        protected Color ColorInformation = Color.FromArgb(0xFF, 0xFF, 0xFF);
 
 		#endregion
 
@@ -245,16 +280,33 @@ namespace OrbitViewer.Applet
 
 			using (Graphics graphics = Graphics.FromImage(Offscreen))
 			{
-				Pen pen = new Pen(Color.White);
+                if (Antialiasing)
+                {
+                    // Set the SmoothingMode property to smooth the line.
+                    graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    // Set the TextRenderingHint prDrawingoperty.
+                    graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                }
+
+                Pen pen = new Pen(Color.White);
 
 				// Clear background
 				SolidBrush sb = new SolidBrush(Color.Black);
 				graphics.FillRectangle(sb, 0, 0, Size.Width, Size.Height);
 
-				DrawEclipticAxis(graphics);
+                if (ShowGrid)
+                {
+                    DrawEclipticGrid(graphics);
+                }
 
-				// Draw Sun
-				sb.Color = ColorSun;
+                if (ShowAxis)
+                {
+                    DrawEclipticAxis(graphics);
+                }
+
+                // Draw Sun
+                sb.Color = ColorSun;
 				graphics.FillPie(sb, X0 - 2, Y0 - 2, 5, 5, 0, 360);
 
 				// Draw Orbit of Object
@@ -379,9 +431,20 @@ namespace OrbitViewer.Applet
 				point1.X = labelMargin;
 				point1.Y = labelMargin;
 
-				graphics.DrawString(Comet.Name, FontInformation, sb, point1.X, point1.Y);
+                if (ShowInfoObject)
+                {
+                    xyz = ObjectPos.Rotate(MtxToEcl);
+                    ///xyz = ObjectOrbit.GetAt(0).Rotate(MtxToEcl); // Perihelie
+                    graphics.DrawString(Comet.Name, FontInformation, sb, point1.X, point1.Y);
+                    point1.Y = labelMargin + (int)(fontSize * 2);
+                    graphics.DrawString(string.Format("X: {0:#0.00000000}", xyz.X), FontInformation, sb, point1.X, point1.Y);
+                    point1.Y = labelMargin + (int)(fontSize * 4);
+                    graphics.DrawString(string.Format("Y: {0:#0.00000000}", xyz.Y), FontInformation, sb, point1.X, point1.Y);
+                    point1.Y = labelMargin + (int)(fontSize * 6);
+                    graphics.DrawString(string.Format("Z: {0:#0.00000000}", xyz.Z), FontInformation, sb, point1.X, point1.Y);
+                }
 
-				if (ShowDistanceLabel)
+                if (ShowDistanceLabel)
 				{
 					// Earth & Sun Distance
 					double edistance, sdistance;
@@ -396,10 +459,10 @@ namespace OrbitViewer.Applet
 					zdiff = xyz.Z - xyz1.Z;
 					edistance = Math.Sqrt((xdiff * xdiff) + (ydiff * ydiff) + (zdiff * zdiff)) + .0005;
 
-					dstr = String.Format("Earth Distance: {0:#0.0000} AU", edistance);
-					rstr = String.Format("Sun Distance:   {0:#0.0000} AU", sdistance);
+					dstr = String.Format("Earth Distance: {0:#0.00000000} AU = {1:### ### ### ###} km", edistance, edistance * 149597870.700);
+                    rstr = String.Format("Sun Distance:   {0:#0.00000000} AU = {1:### ### ### ###} km", sdistance, sdistance * 149597870.700);
 
-					point1.Y = Size.Height - labelMargin - (int)(fontSize * 3.5);
+                    point1.Y = Size.Height - labelMargin - (int)(fontSize * 3.5);
 					graphics.DrawString(dstr, FontInformation, sb, point1.X, point1.Y);
 
 					point1.Y = Size.Height - labelMargin - (int)(fontSize * 2.0);
@@ -408,12 +471,12 @@ namespace OrbitViewer.Applet
 
 				if (ShowDateLabel)
 				{
-					// Date string
-					string strDate = String.Format("{0} {1} {2}", ATime.Day, ATime.MonthAbbr(ATime.Month), ATime.Year);
-					point1.X = Size.Width - (int)graphics.MeasureString(strDate, FontInformation).Width - labelMargin;
+                    // Date string
+                    string strDate = String.Format("{0} {1:00} {2:00} {3:00}h{4:00}min{5:00}s UTC", ATime.Year, ATime.MonthAbbr(ATime.Month), ATime.Day, ATime.Hour, ATime.Minute, ATime.Second);
+                    point1.X = Size.Width - (int)graphics.MeasureString(strDate, FontInformation).Width - labelMargin;
 					point1.Y = Size.Height - labelMargin - (int)(fontSize * 2.0);
 					graphics.DrawString(strDate, FontInformation, sb, point1.X, point1.Y);
-					string strJD = String.Format("JD: {0:#0.00000}", atime.JD);
+					string strJD = String.Format("Julian Day: {0:#0.000000}", atime.JD);
 					point1.X = Size.Width - (int)graphics.MeasureString(strJD, FontInformation).Width - labelMargin;
 					point1.Y = Size.Height - labelMargin - (int)(fontSize * 3.5);
 					graphics.DrawString(strJD, FontInformation, sb, point1.X, point1.Y);
@@ -565,11 +628,43 @@ namespace OrbitViewer.Applet
 			graphics.DrawLine(pen, X0, Y0, point.X, point.Y);
 		}
 
-		#endregion
+        #endregion
 
-		#region SelectOrbits
+        #region DrawEclipticGrid
 
-		public void SelectOrbits(bool[] orbitDisplay)
+        private void DrawEclipticGrid(Graphics graphics)
+        {
+            Pen pen = new Pen(Colorplane);
+            ///pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            Xyz xyz;
+            Point point1, point2;
+            double sizeAU = 50.0;
+
+            for (int y = 50; y > -51; y--)
+            {
+                xyz = new Xyz(-sizeAU, y, 0.0).Rotate(MtxRotate);
+                point1 = GetDrawPoint(xyz);
+                xyz = new Xyz(sizeAU, y, 0.0).Rotate(MtxRotate);
+                point2 = GetDrawPoint(xyz);
+                graphics.DrawLine(pen, point1.X, point1.Y, point2.X, point2.Y);
+            }
+
+
+            for (int x = -50; x < 51; x++)
+            {
+                xyz = new Xyz(x, sizeAU, 0.0).Rotate(MtxRotate);
+                point1 = GetDrawPoint(xyz);
+                xyz = new Xyz(x, -sizeAU, 0.0).Rotate(MtxRotate);
+                point2 = GetDrawPoint(xyz);
+                graphics.DrawLine(pen, point1.X, point1.Y, point2.X, point2.Y);
+            }
+        }
+
+        #endregion
+
+        #region SelectOrbits
+
+        public void SelectOrbits(bool[] orbitDisplay)
 		{
 			for (int i = 0; i < orbitDisplay.Length; i++)
 			{
