@@ -76,8 +76,8 @@ namespace OrbitViewer.Application
 		};
 
 		static ATimeSpan[] timeStepSpan = {
-            new ATimeSpan(0, 0,  0, 0, 0, 1.0),
-            new ATimeSpan(0, 0,  0, 0, 1, 0.0),
+			new ATimeSpan(0, 0,  0, 0, 0, 1.0),
+			new ATimeSpan(0, 0,  0, 0, 1, 0.0),
 			new ATimeSpan(0, 0,  0, 1, 0, 0.0),
 			new ATimeSpan(0, 0,  1, 0, 0, 0.0),
 			new ATimeSpan(0, 0,  3, 0, 0, 0.0),
@@ -151,7 +151,7 @@ namespace OrbitViewer.Application
 			cboCenter.SelectedIndex = (int)CenteredObjectEnum.Sun;
 
 			cboOrbits.DataSource = OrbitsDisplayItems;
-			cboOrbits.SelectedIndex = (int)OrbitsEnum.Default;
+			cboOrbits.SelectedIndex = (int)OrbitsEnum.AllOrbits;
 
 			cboTimestep.DataSource = TimeStepItems;
 			cboTimestep.SelectedIndex = 3;
