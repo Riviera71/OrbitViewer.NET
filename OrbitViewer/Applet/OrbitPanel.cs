@@ -162,7 +162,7 @@ namespace OrbitViewer.Applet
 		protected Color ColorMercuryOrbitUpper = Color.FromArgb(0x0ff, 0x00, 0xBB);
 		protected Color ColorMercuryOrbitLower = Color.FromArgb(0x99, 0x00, 0x70);
 		protected Color ColorVenusOrbitUpper = Color.FromArgb(0xA0, 0x70, 0xD0);
-        protected Color ColorVenusOrbitLower = Color.FromArgb(0x60, 0x43, 0x7D);
+		protected Color ColorVenusOrbitLower = Color.FromArgb(0x60, 0x43, 0x7D);
 		protected Color ColorEarthOrbitUpper = Color.FromArgb(0x20, 0xC0, 0xFF);
 		protected Color ColorEarthOrbitLower = Color.FromArgb(0x13, 0x73, 0x99);
 		protected Color ColorMarsOrbitUpper = Color.FromArgb(0xFF, 0x40, 0x10);
@@ -297,12 +297,12 @@ namespace OrbitViewer.Applet
 
 				if (ShowGrid)
 				{
-                    DrawEclipticGrid(graphics);
+					DrawEclipticGrid(graphics);
 				}
 
 				if (ShowAxis)
 				{
-                    DrawEclipticAxis(graphics);
+					DrawEclipticAxis(graphics);
 				}
 
 				// Draw Sun
