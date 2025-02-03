@@ -413,12 +413,12 @@ namespace OrbitViewer.Applet
 					point1.X = Size.Width - (int)graphics.MeasureString(strDate, FontInformation).Width - labelMargin;
 					point1.Y = Size.Height - labelMargin - (int)(fontSize * 2.0);
 					graphics.DrawString(strDate, FontInformation, sb, point1.X, point1.Y);
-                    string strJD = String.Format("JD: {0:#0.00000}", atime.JD);
-                    point1.X = Size.Width - (int)graphics.MeasureString(strJD, FontInformation).Width - labelMargin;
-                    point1.Y = Size.Height - labelMargin - (int)(fontSize * 3.5);
-                    graphics.DrawString(strJD, FontInformation, sb, point1.X, point1.Y);
+					string strJD = String.Format("JD: {0:#0.00000}", atime.JD);
+					point1.X = Size.Width - (int)graphics.MeasureString(strJD, FontInformation).Width - labelMargin;
+					point1.Y = Size.Height - labelMargin - (int)(fontSize * 3.5);
+					graphics.DrawString(strJD, FontInformation, sb, point1.X, point1.Y);
 
-                }
+				}
 			}
 
 			g.DrawImage(Offscreen, 0, 0);
