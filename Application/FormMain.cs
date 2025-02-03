@@ -160,8 +160,12 @@ namespace OrbitViewer.Application
 			orbitPanel.ShowObjectName = cbxObject.Checked;
 			orbitPanel.ShowDistanceLabel = cbxDistance.Checked;
 			orbitPanel.ShowDateLabel = cbxDate.Checked;
+            orbitPanel.ShowAxis = cbxAxis.Checked;
+            orbitPanel.ShowGrid = cbxGrid.Checked;
+            orbitPanel.ShowInfoObject = cbxInfoObject.Checked;
+            orbitPanel.Antialiasing = cbxAntialiasing.Checked;
 
-			cboObjectType.DataSource = new string[] { TypeComet, TypeAsteroid };
+            cboObjectType.DataSource = new string[] { TypeComet, TypeAsteroid };
 			SetObjectDataSource();
 
 			orbitPanel.PaintEnabled = true;
@@ -359,6 +363,30 @@ namespace OrbitViewer.Application
 		private void cbxDate_CheckedChanged(object sender, EventArgs e)
 		{
 			orbitPanel.ShowDateLabel = cbxDate.Checked;
+			orbitPanel.Invalidate();
+		}
+
+		private void cbxAxis_CheckedChanged(object sender, EventArgs e)
+		{
+			orbitPanel.ShowAxis = cbxAxis.Checked;
+			orbitPanel.Invalidate();
+		}
+
+		private void cbxGrid_CheckedChanged(object sender, EventArgs e)
+		{
+			orbitPanel.ShowGrid = cbxGrid.Checked;
+			orbitPanel.Invalidate();
+		}
+
+		private void cbxInfoObject_CheckedChanged(object sender, EventArgs e)
+		{
+			orbitPanel.ShowInfoObject = cbxInfoObject.Checked;
+			orbitPanel.Invalidate();
+		}
+
+		private void cbxAntialiasing_CheckedChanged(object sender, EventArgs e)
+		{
+			orbitPanel.Antialiasing = cbxAntialiasing.Checked;
 			orbitPanel.Invalidate();
 		}
 
