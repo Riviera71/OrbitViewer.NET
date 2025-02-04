@@ -152,8 +152,8 @@ namespace OrbitViewer.Applet
 
 		#region Colors
 
-		protected Color ColorObjectOrbitUpper = Color.FromArgb(0x7F, 0x00, 0xF5, 0xFF);
-		protected Color ColorObjectOrbitLower = Color.FromArgb(0x7F, 0x00, 0x00, 0xFF);
+		protected Color ColorObjectOrbitUpper = Color.FromArgb(0x00, 0xF5, 0xFF);
+		protected Color ColorObjectOrbitLower = Color.FromArgb(0x00, 0x00, 0xFF);
 		protected Color ColorObject = Color.FromArgb(0x00, 0xFF, 0xFF);
 		protected Color ColorObjectName = Color.FromArgb(0x00, 0xcc, 0xcc);
 		protected Color ColorPlanetOrbitUpper = Color.FromArgb(0xFF, 0xFF, 0xFF);
@@ -283,13 +283,13 @@ namespace OrbitViewer.Applet
 				if (Antialiasing)
 				{
 					// Set the SmoothingMode property to smooth the line.
-					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
 					// Set the TextRenderingHint prDrawingoperty.
-					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 				}
 
-				Pen pen = new Pen(Color.White,3.0f);
+				Pen pen = new Pen(Color.White,2.5f);
 
 				// Clear background
 				SolidBrush sb = new SolidBrush(Color.Black);
@@ -558,7 +558,7 @@ namespace OrbitViewer.Applet
 
 		private void DrawPlanetOrbit(Graphics graphics, PlanetOrbit planetOrbit, Color colorUpper, Color colorLower)
 		{
-			Pen pen = new Pen(colorUpper,3.0f);
+			Pen pen = new Pen(colorUpper,2.5f);
 			Point point1, point2;
 			Xyz xyz = planetOrbit.GetAt(0).Rotate(MtxToEcl).Rotate(MtxRotate);
 
