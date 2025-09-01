@@ -658,7 +658,26 @@ namespace OrbitViewer.Applet
 				point2 = GetDrawPoint(xyz);
 				graphics.DrawLine(pen, point1.X, point1.Y, point2.X, point2.Y);
 			}
-		}
+
+            for (int z = 50; z > -51; z--)
+            {
+                xyz = new Xyz(-sizeAU, 0.0, z).Rotate(MtxRotate);
+                point1 = GetDrawPoint(xyz);
+                xyz = new Xyz(sizeAU, 0.0, z).Rotate(MtxRotate);
+                point2 = GetDrawPoint(xyz);
+                graphics.DrawLine(pen, point1.X, point1.Y, point2.X, point2.Y);
+            }
+
+
+            for (int x = -50; x < 51; x++)
+            {
+                xyz = new Xyz(x, 0.0, -sizeAU).Rotate(MtxRotate);
+                point1 = GetDrawPoint(xyz);
+                xyz = new Xyz(x, 0.0, sizeAU).Rotate(MtxRotate);
+                point2 = GetDrawPoint(xyz);
+                graphics.DrawLine(pen, point1.X, point1.Y, point2.X, point2.Y);
+            }
+        }
 
 		#endregion
 
